@@ -9,13 +9,11 @@
  * @author andrew.nash
  * @version 2.0
  */
-class Ashtree_Common
-{
+class Ashtree_Common {
     /**
      * 
      */
-    public function __construct()
-    {
+    public function __construct() {
         
     }
     
@@ -23,10 +21,12 @@ class Ashtree_Common
     /**
      * Converts a path in the site root to the application root
      */
-    public static function get_real_path($path, $absolute=FALSE)
-    {
-        if ($absolute) return ASH_ROOTPATH . preg_replace('/^\//', '', str_replace(array(ASH_ROOTPATH, ASH_ROOTNAME), '', $path));
-        else           return ASH_ROOTNAME . preg_replace('/^\//', '', str_replace(array(ASH_ROOTPATH, ASH_ROOTNAME), '', $path));  
+    public static function get_real_path($path, $absolute=FALSE) {
+        $rootname = (ASH_ROOTNAME != '/') ? ASH_ROOTNAME : '';
+        $rootpath = (ASH_ROOTPATH != '/') ? ASH_ROOTPATH : '';
+        if ($absolute) return ASH_ROOTPATH . preg_replace('/^\//', '', str_replace(array($rootpath, $rootname), '', $path));
+        else           return ASH_ROOTNAME . preg_replace('/^\//', '', str_replace(array($rootpath, $rootname), '', $path));
+
     }
     
     /**
@@ -35,8 +35,7 @@ class Ashtree_Common
      * @param String $dir
      * @return Boolean
      */
-    public static function get_all_includes($dir)
-    {
+    public static function get_all_includes($dir) {
         $directory = Ashtree_Common::get_real_path($dir, TRUE);
         if (is_dir($directory) && ($handler = opendir($directory)))
 		{
@@ -59,8 +58,7 @@ class Ashtree_Common
     /**
      * 
      */
-    function redirect($url=NULL)
-    {
+    function redirect($url=NULL) {
         $destination = (isset($url)) ? $url : $_SERVER['REQUEST_URI'];
         header("Location: {$destination}");
         exit;
@@ -77,8 +75,7 @@ class Ashtree_Common
      * @example Ashtree_Common::is(DEFINED_CONSTANT) //'ON' returns TRUE
      * @example Ashtree_Common::is(strpos('abc', 'a'), TRUE) //0 returns TRUE
      */
-    public static function is($value, $absolute=FALSE)
-    {
+    public static function is($value, $absolute=FALSE) {
     	if ($absolute && is_integer($value))
     	{
     		$result = ($value !== FALSE) ? TRUE : FALSE;
@@ -126,8 +123,7 @@ class Ashtree_Common
 	 * @param
 	 * @return
 	 */
-	public static function extend(&$arr1, $arr2)
-	{
+	public static function extend(&$arr1, $arr2) {
 		//This won't work for auto indexing
 		//$arr1 = array_merge($arr1, $arr2);
 		
@@ -159,8 +155,7 @@ class Ashtree_Common
 	 * TODO
 	 *
 	 */
-	public static function file_force_contents($dir, $contents=NULL)
-	{
+	public static function file_force_contents($dir, $contents=NULL) {
 		$dbg = Ashtree_Common_Debug::instance();
 		
 		// Can't create folders outside the root anyway
@@ -185,8 +180,7 @@ class Ashtree_Common
 	 * @param
 	 * @return
 	 */
-	public static function char_limit($string, $size, $words=FALSE)
-	{
+	public static function char_limit($string, $size, $words=FALSE) {
 	    if ($words)
 	    {
 	        $chunks = explode(' ', $string);
@@ -212,8 +206,7 @@ class Ashtree_Common
 	 * @param
 	 * @return
 	 */
-	public static function byte_suffix($value, $suffix='all')
-	{
+	public static function byte_suffix($value, $suffix='all') {
 		$last = strtolower($value[strlen($value)-1]);
 		
 		if (!is_numeric($last))
@@ -243,8 +236,7 @@ class Ashtree_Common
 	 * @param String $filter
 	 * @return Array
 	 */
-	public static function readdir($directory, $filter=NULL)
-	{
+	public static function readdir($directory, $filter=NULL) {
     	if ($dir_handler = opendir(self::get_real_path($directory, TRUE)))
     	{
     	    $files = array();
@@ -270,8 +262,7 @@ class Ashtree_Common
 	 * @param String $string
 	 * @return String
 	 */
-	public static function capitalize($string)
-	{
+	public static function capitalize($string) {
 		//first we make everything lowercase, and then make the first letter if the entire string capitalized
 		#$string = ucfirst(strtolower($string));
 		 
@@ -316,8 +307,7 @@ class Ashtree_Common
 	 * @param Int $num
 	 * @return String
 	 */
-	public static function random_alphanumeric($num=1)
-	{
+	public static function random_alphanumeric($num=1) {
 		if (!function_exists('pick'))
 		{
 			function pick($from)
@@ -350,8 +340,7 @@ class Ashtree_Common
 	 * @param [String $position='left|right']
 	 * @return String
 	 */
-	public static function currency($amount, $symbol='R', $position='left')
-	{
+	public static function currency($amount, $symbol='R', $position='left') {
 	    $sympos = array('left'=>'', 'right'=>'');
 	    $sympos[$position] = $symbol;
 	    
@@ -363,8 +352,7 @@ class Ashtree_Common
 	 * @param String $figure
 	 * @return float
 	 */
-	public static function uncurrency($figure) 
-	{
+	public static function uncurrency($figure)  {
 	    $amount = str_replace(',', '', $figure);
 	    return preg_replace('/.*?(\d+\.\d+).*|.*?(\d+).*/i', '${1}${2}', $amount);
 	}
@@ -376,8 +364,7 @@ class Ashtree_Common
 	 * @param [String $protocol=http]
 	 * @return String
 	 */
-	public static function http($url, $prepend=TRUE, $protocol='http')
-	{
+	public static function http($url, $prepend=TRUE, $protocol='http') {
 		if ($prepend) {
 			if (!substr_count($url, "://", 0, 8)) {
 				return "{$protocol}://{$url}";
@@ -396,8 +383,7 @@ class Ashtree_Common
 	 * @param [String $protocol=http]
 	 * @return String
 	 */
-	public static function https($url, $prepend=TRUE)
-	{
+	public static function https($url, $prepend=TRUE) {
 		return self::http($url, $prepend, $protocol='https');
 	}
     
@@ -407,8 +393,7 @@ class Ashtree_Common
 	 * @param [String $tense='ago']
 	 * @return String
 	 */
-	public static function time_ago($time, $tense='ago')
-	{
+	public static function time_ago($time, $tense='ago') {
 		$periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
 		$lengths = array("60","60","24","7","4.35","12","10");
 	
