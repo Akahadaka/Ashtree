@@ -10,37 +10,26 @@
  */
 class Ashtree_Common_Template
 {
-	/**
-	 * @access private
-	 * @var Object $_instance
-	 */
+
 	private static $_instance;
-	
-	/**
-	 * @access private
-	 * @var Array $_params
-	 */ 
-	private $_params = array(); 
-	
-	/**
-	 * @access private
-	 * @var Object $_debug
-	 */
+
+    private $_params = array();
 	private $_debug;
-	
-	/**
-	 * @access private
-	 * @var String $_template
-	 */
 	private $_template;
+
+    public $path;
+    public $body_from_binaries;
 
 	/**
 	 * 
 	 */
-	public function __construct()
-	{
+	public function __construct() {
+
 		$this->_debug = Ashtree_Common_Debug::instance();
-		
+
+        // These should not be declared
+        // so that get_defined_vars() can use them
+        // in the template
 		$this->rootname  = ASH_ROOTNAME;
 		$this->rootpath  = ASH_ROOTPATH;
 		$this->roothttp  = ASH_ROOTHTTP;
@@ -57,29 +46,28 @@ class Ashtree_Common_Template
 		$this->server = @$_SERVER;
 		$this->cookie = @$_COOKIE;
 		$this->session = @$_SESSION;
+        // end vars
+
+        $this->path = explode('/', @$_GET['$page']);
 		
 	}
 	
 	/**
-	 * @access
-	 * @param
+	 *
 	 */
-	public function __get($key)
-	{
+	public function __get($key) {
+
 		return array_key_exists($key, $this->_params) ? $this->_params[$key] : '';
 	}
 	
 	/**
-	 * @access
-	 * @param
+	 *
 	 */
-	public function __set($key, $value)
-	{
-		switch($key)
-		{
+	public function __set($key, $value) {
+
+        switch($key) {
 			case 'theme':
-				if ($value != '')
-				{
+				if ($value != '') {
 					$this->_params['theme'] = (strpos($value, '/') !== FALSE) ? (($value[strlen($value)-1] == '/') ? $value : "{$value}/") : "themes/{$value}/";
 					#$this->_debug->title = "INFO:: Template theme defined '" . $this->_params['theme'] . "'";
 				}
@@ -91,20 +79,18 @@ class Ashtree_Common_Template
 	}
 	
 	/**
-	 * @access
-	 * @param
+	 *
 	 */
-	public function __isset($key)
-	{
+	public function __isset($key) {
+
 		return isset($this->_params[$key]);
 	}
 	
 	/**
-	 * @access
-	 * @param
+	 *
 	 */
-	public function __unset($key)
-	{
+	public function __unset($key) {
+
 		unset($this->_params[$key]);
 	}
 	
@@ -117,10 +103,9 @@ class Ashtree_Common_Template
 	 *
 	 * @return new instance
 	 */
-    public static function instance()
-	{
-		if (!isset(self::$_instance)) 
-		{
+    public static function instance() {
+
+        if (!isset(self::$_instance)) {
 			$class = __CLASS__;
 			self::$_instance = new $class;
 		}
@@ -128,15 +113,22 @@ class Ashtree_Common_Template
 		return self::$_instance;
 	}
 
+    /**
+     * Return the value at the url path position specified
+     * @param $pos
+     */
+    public function get_url_pos($pos) {
+        return (isset($this->path[$pos-1])) ? $this->path[$pos-1] : FALSE;
+    }
+
 	
 	/**
 	 * Get_user_defined_vars
-	 * @access
 	 * @param
 	 * @return
 	 */
-	public function get_user_defined_vars()
-	{	
+	public function get_user_defined_vars() {
+
 		$vars = (isset($this->defined_variables)) ? $this->defined_variables : $this->_params;
 		
 		return $vars;
@@ -145,12 +137,11 @@ class Ashtree_Common_Template
 
 	/**
 	 * Set_defined_variables
-	 * @access
 	 * @param
 	 * @return
 	 */
-	public function set_defined_variables($vars)
-	{
+	public function set_defined_variables($vars) {
+
 		$this->defined_variables = $vars;
 	}
 
@@ -163,15 +154,13 @@ class Ashtree_Common_Template
 	 * @param [Array $var_values]
 	 * @return String
 	 */
-	public function string_get_template($text, $var_values=FALSE)
-	{
+	public function string_get_template($text, $var_values=FALSE) {
+
 	    // Determine all variables to be replaced with values
 	    // Call this before including a file
 	    // for the variables to be accessible in the php tags
-	    if (!$var_values)
-	    {
-    		foreach((array)$this->get_user_defined_vars() as $var123=>$val456)
-    		{
+	    if (!$var_values) {
+    		foreach((array)$this->get_user_defined_vars() as $var123=>$val456) {
     		    $$var123 = $val456;
     		    if (is_array($val456)) {
     				foreach($val456 as $k123=>$v456) $var_values["{\${$var123}.{$k123}}"] = $v456;
@@ -183,7 +172,7 @@ class Ashtree_Common_Template
 		
 		// Replace any variables in the template with the existing user defined vars
 		preg_match_all('/{\$(.*?)}/', $text, $matches);
-		foreach((array)$matches[0] as $key=>$value){
+		foreach((array)$matches[0] as $key=>$value) {
 			if (isset($var_values[$value])) {
 			    $text = str_replace($value, $var_values[$value], $text);
 			} else {
@@ -195,8 +184,7 @@ class Ashtree_Common_Template
 		
 		// Replace any CMS variables with content from the database
 		preg_match_all('/{@(.*?)}/', $text, $matches);
-		if (!empty($matches[0]))
-		{
+		if (!empty($matches[0])) {
 		    $cms = new Ashtree_Common_Cms(ASH_SITE_NAME);
 		    $var = $cms->get_content($this->_template);
 		    foreach((array)$matches[1] as $key=>$value){
@@ -218,8 +206,7 @@ class Ashtree_Common_Template
 		// When the site goes live, then we clean up the page
 		// by removing any links to manually included stylesheets
 		// and removing links to manually included javascript files
-		if (ASH_SITE_MODE != 'development')
-		{
+		if (ASH_SITE_MODE != 'development') {
 		    $text = preg_replace('/<link.*\/>/i', '', $text);
 		    $text = preg_replace('/<script.*src.*\/script>/i', '', $text);
 		    $text = preg_replace('/\n+|\t+/', '', $text);
@@ -231,12 +218,10 @@ class Ashtree_Common_Template
 
 	/**
 	 * include_database_template
-	 * @access
 	 * @param
 	 * @return
 	 */
-	public function db_get_template($nodename=NULL, $connection=NULL, $language=NULL)
-	{
+	public function db_get_template($nodename=NULL, $connection=NULL, $language=NULL) {
 
 	}
 
@@ -247,8 +232,7 @@ class Ashtree_Common_Template
 	 * @param String $filename
 	 * @return String
 	 */
-	public function file_get_template($filename)
-	{	
+	public function file_get_template($filename) {
 	    //Check the filename root
 	    $fullname = Ashtree_Common::get_real_path($filename, TRUE);
 	    
@@ -262,8 +246,7 @@ class Ashtree_Common_Template
 	    // Determine all variables to be replaced with values
 	    // Call this before including a file
 	    // for the variables to be accessible in the php tags
-	    foreach((array)$this->get_user_defined_vars() as $var123=>$val456)
-		{
+	    foreach((array)$this->get_user_defined_vars() as $var123=>$val456) {
 		    $$var123 = $val456;
 		    if (is_array($val456)) {
 				foreach($val456 as $k123=>$v456) $var_values["{\${$var123}.{$k123}}"] = $v456;
@@ -301,8 +284,8 @@ class Ashtree_Common_Template
 	 * @param $filename
 	 * @return String
 	 */
-	public function include_template($filename, $database=NULL, $language=NULL)
-	{
+	public function include_template($filename, $database=NULL, $language=NULL) {
+
 		// Modify the filename intelligently
 		// and save the current template
 		$this->_template = (substr_count($filename, '.tpl.php')) ? $filename : ASH_BASEPATH . "bin/templates/{$filename}.tpl.php";
@@ -314,17 +297,24 @@ class Ashtree_Common_Template
 		
 		return $text;
 	}
-	
-	
-	/**
+
+    /**
+     *
+     */
+    public static function append($filename) {
+        $tpl = Ashtree_Common_Template::instance();
+        $tpl->body_from_binaries .= $tpl->include_template($filename);
+    }
+
+
+    /**
 	 * An simple and obvious method to output a template
 	 * when no parameters need to be specified
 	 * apart from an ideifying name
 	 * @access public
 	 * @param $filename
 	 */
-	public static function write($filename)
-	{
+	public static function write($filename) {
 		$tpl = Ashtree_Common_Template::instance();
 		echo $tpl->include_template($filename);
 	}
