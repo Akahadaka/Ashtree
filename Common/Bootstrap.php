@@ -13,9 +13,11 @@
 /**
  * Always relative to root of libraries "lib" folder 
  */
-define('ASH_ROOTNAME',   str_replace('//', '/', '/' . preg_replace('/lib.*/', '', str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', str_replace('\\', '/', __FILE__)))), TRUE);
+define('DOCUMENT_ROOT',  (substr_count(__FILE__, 'vagrant') ? str_replace('/var/www/vhosts', '/media/psf/vagrant-root', $_SERVER['DOCUMENT_ROOT']) : $_SERVER['DOCUMENT_ROOT']), TRUE);
 
-define('ASH_ROOTPATH',   preg_replace('/\/$/', '', realpath($_SERVER['DOCUMENT_ROOT'])) . ASH_ROOTNAME, TRUE);
+define('ASH_ROOTNAME',   str_replace('//', '/', '/' . preg_replace('/lib.*/', '', str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', __FILE__)))), TRUE);
+
+define('ASH_ROOTPATH',   preg_replace('/\/$/', '', DOCUMENT_ROOT) . ASH_ROOTNAME, TRUE);
 
 define('ASH_ROOTHTTP',  'http://' . $_SERVER['SERVER_NAME'] . ASH_ROOTNAME, TRUE);
 
@@ -24,7 +26,7 @@ define('ASH_ROOTHTTPS', 'https://' . $_SERVER['SERVER_NAME'] . ASH_ROOTNAME, TRU
 // Define all base paths relative to the initiating script
 define('ASH_BASENAME',  str_replace('//', '/', pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME) . '/'), TRUE);
 
-define('ASH_BASEPATH',  preg_replace('/\/$/', '', realpath($_SERVER['DOCUMENT_ROOT'])) . ASH_BASENAME, TRUE);
+define('ASH_BASEPATH',  preg_replace('/\/$/', '', DOCUMENT_ROOT) . ASH_BASENAME, TRUE);
 
 define('ASH_BASEHTTP',  'http://' . $_SERVER['SERVER_NAME'] . ASH_BASENAME, TRUE);
 
