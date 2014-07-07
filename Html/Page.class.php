@@ -82,7 +82,7 @@ class Ashtree_Html_Page
 		$this->_params['style']      = array();
 		$this->_params['element']    = array();
 		
-        $this->jquery = "$('.message-discard').bind('click', function(){ $(this).closest('li').slideUp(); });";
+                $this->jquery = "$('.message-discard').bind('click', function(){ $(this).closest('li').slideUp(); });";
 		
 		$this->set_template();
 		
@@ -511,7 +511,7 @@ class Ashtree_Html_Page
 		else if (isset($theme))                                $this->theme = $theme;
 		else if (defined('ASH_SITE_THEME'))                   $this->theme = ASH_SITE_THEME;
 		$this->_debug->log("INFO", "Setting theme to {$this->theme}");
-
+                
 		// Once a theme has been established 
 		// check the the files exist
 		// otherwise fall back on the wireframe
