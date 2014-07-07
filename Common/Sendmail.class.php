@@ -1,5 +1,5 @@
 <?php
-include(ASH_ROOTPATH . '/lib/PHPMailer/class.phpmailer.php');
+include(ASH_ROOTPATH . '/lib/PHPMailer/PHPMailerAutoload.php');
 
 class Ashtree_Common_Sendmail extends PHPMailer {
 	
