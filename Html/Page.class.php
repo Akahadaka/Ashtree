@@ -256,7 +256,15 @@ class Ashtree_Html_Page
 	 */
 	private function _print_html_head_metatags()
 	{
-		return "<meta http-equiv=\"Content-Type\" content=\"text/html; charset={$this->charset}\" />\n";
+            $theme = ($this->theme) ? $this->theme : '';
+            
+            $fullpath = ASH_ROOTNAME . $theme . 'favicon.ico';
+            if (!is_file($fullpath)) {
+                $fullpath = ASH_ROOTNAME . 'favicon.ico';
+            }
+            
+		return "<meta http-equiv=\"Content-Type\" content=\"text/html; charset={$this->charset}\" />\n"
+                . "<link rel=\"shortcut icon\" href=\"{$fullpath}\" type=\"image/x-icon\" />\n";
 	}
 	
 	/**
