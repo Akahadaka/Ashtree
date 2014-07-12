@@ -494,7 +494,7 @@ class Ashtree_Common_Secure
 					:remember AS remember,
 					data.firstname AS dispname
 				FROM snow_userinfo info
-					LEFT JOIN {$sql->prefix}people data ON info.identity = data.identity
+					LEFT JOIN {$sql->prefix}form_people data ON info.identity = data.identity
 				WHERE info.verified IS TRUE
 				AND info.username = :username
 				AND info.password = :password;
