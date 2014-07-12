@@ -74,11 +74,14 @@ class Ashtree_Html_Page
 		
 		$this->invoked = FALSE;
 		
-		$this->_params['jss'][]      = 'lib/jQuery/jquery.min.js';
-		$this->_params['jss'][]      = 'lib/jQuery.UI/ui/minified/jquery-ui.min.js';
+		$this->_params['prepend_js'][]      = 'lib/jQuery/jquery.min.js';
+		$this->_params['prepend_js'][]      = 'lib/jQuery.UI/ui/minified/jquery-ui.min.js';
+                $this->_params['js']         = array();
+                $this->_params['jss']        = array();
 		$this->_params['javascript'] = array();
 		$this->_params['jquery']     = array();
-		$this->_params['css'][]      = 'lib/jQuery.UI/themes/base/minified/jquery-ui.min.css';
+		$this->_params['prepend_css'][]      = 'lib/jQuery.UI/themes/base/minified/jquery-ui.min.css';
+                $this->_params['css']        = array();
 		$this->_params['style']      = array();
 		$this->_params['element']    = array();
 		
@@ -107,9 +110,12 @@ class Ashtree_Html_Page
 	{
 		switch($key)
 		{
-			case 'css':
+			case 'prepend_css':
+                        case 'css':
 			case 'style':
-			case 'jss':
+			case 'prepend_js':
+                        case 'js':
+                        case 'jss':
 			case 'jquery':
 			case 'javascript':
 			case 'keyword':
@@ -280,7 +286,7 @@ class Ashtree_Html_Page
 		//Check if theme defined
 		$theme = ($this->theme) ? $this->theme : '';
 		
-		foreach($this->jss as $script) {
+		foreach(array_merge($this->prepend_js, $this->js, $this->jss) as $script) {
 			$skip = FALSE;
 			
 			$fullpath = $script;
@@ -350,7 +356,7 @@ class Ashtree_Html_Page
 		//Check if theme defined
 		$theme = ($this->theme) ? $this->theme : '';
 		
-		foreach($this->css as $style) {
+		foreach(array_merge($this->prepend_css, $this->css) as $style) {
 			$skip = FALSE;
 			
 			$partpath = (strpos($style, '.css') === FALSE) ? "{$theme}css/{$style}.css" : "/{$style}";
