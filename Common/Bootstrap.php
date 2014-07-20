@@ -13,7 +13,8 @@
 /**
  * Always relative to root of libraries "lib" folder 
  */
-define('DOCUMENT_ROOT',  (substr_count(__FILE__, 'vagrant') ? str_replace('/var/www/vhosts', '/media/psf/vagrant-root', $_SERVER['DOCUMENT_ROOT']) : $_SERVER['DOCUMENT_ROOT']), TRUE);
+
+define('DOCUMENT_ROOT', str_replace('lib/Ashtree/Common/Bootstrap.php', '', __FILE__));
 
 define('ASH_ROOTNAME',   str_replace('//', '/', '/' . preg_replace('/lib.*/', '', str_replace(DOCUMENT_ROOT, '', str_replace('\\', '/', __FILE__)))), TRUE);
 
