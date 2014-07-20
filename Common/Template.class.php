@@ -237,6 +237,7 @@ class Ashtree_Common_Template
 	    $fullname = Ashtree_Common::get_real_path($filename, TRUE);
 	    
 	    // Fallback for missing templates
+            if (!file_exists($fullname) && substr_count($fullname, 'partials'))  $fullname = Ashtree_Common::get_real_path(ASH_BASENAME . "bin/templates/" . $filename, TRUE);
 	    if (!file_exists($fullname)) $fullname = str_replace(ASH_BASENAME . "bin/templates/", ASH_ROOTNAME . "{$this->theme}bin/templates/", $filename);
 	    if (!file_exists($fullname)) $fullname = Ashtree_Common::get_real_path(ASH_ROOTPATH . "bin/templates/404.tpl.php", TRUE);
 	    if (!file_exists($fullname)) $fullname = Ashtree_Common::get_real_path(ASH_ROOTNAME . "{$this->theme}bin/templates/404.tpl.php", TRUE);
