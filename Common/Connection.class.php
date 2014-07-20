@@ -77,7 +77,7 @@ class Ashtree_Common_Connection
 	{
 	    if (isset($connection))
 	    {
-	        $this->prefix = (isset(self::$_defined[$connection]['snow_conn_dbprefix'])) ? self::$_defined[$connection]['snow_conn_dbprefix'] : '';
+	        $this->prefix = (isset(self::$_defined[$connection]['ash_conn_dbprefix'])) ? self::$_defined[$connection]['ash_conn_dbprefix'] : '';
 	        $this->_sql = new Ashtree_Resource_Mysql(self::$_defined[$connection]);
     	    self::$_connection = $connection;
 	    }
@@ -109,11 +109,18 @@ class Ashtree_Common_Connection
 	 */
     public static function instance($connection=NULL)
 	{
+        
+            // Get new definitions
+            foreach(Ashtree_Database_Connection::get_defined() as $name=>$conn) {
+                $conn['ash_conn_connname'] = $name;
+                self::define($conn);
+            }
+           
 	    // Define the connection
 	    // if it is a new one
 	    if (is_array($connection)) {
 	        self::define($connection);
-	        $connname = $connection = $connection['snow_conn_connname'];
+	        $connname = $connection = $connection['ash_conn_connname'];
 	    } else if ($connection) {
 	        $connname = $connection;
 	    } else {
@@ -135,14 +142,14 @@ class Ashtree_Common_Connection
 	 */
 	public static function define($connection)
 	{
-		$connname = $connection['snow_conn_connname'];
-		unset($connection['snow_conn_connname']);
+		$connname = $connection['ash_conn_connname'];
+		unset($connection['ash_conn_connname']);
 		
 		self::$_defined[$connname] = $connection;
 		
 		$dbg = Ashtree_Common_Debug::instance();
-		$dbg->log("INFO", "Defining new '{$connname}' {$connection['snow_conn_datatype']} connection: {$connection['snow_conn_username']}@{$connection['snow_conn_database']}");
-        $dbg->status("OK");
+		$dbg->log("INFO", "Defining new '{$connname}' {$connection['ash_conn_datatype']} connection: {$connection['ash_conn_username']}@{$connection['ash_conn_database']}");
+                $dbg->status("OK");
 	}
 	
 	/**

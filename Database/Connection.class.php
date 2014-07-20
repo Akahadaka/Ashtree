@@ -38,6 +38,13 @@ class Ashtree_Database_Connection {
 		$dbg->log("INFO", "Defining new '{$connname}' {$connection['ash_conn_datatype']} connection: {$connection['ash_conn_username']}@{$connection['ash_conn_database']}");
 		$dbg->status("OK");
 	}
+        
+        /**
+         * 
+         */
+        public static function get_defined(){
+            return self::$_defined;
+        }
 	
 	/**
 	 * Singleton instance

@@ -41,19 +41,19 @@ class Ashtree_Resource_Mysql
 	{
 	   
 	   $this->_debug = Ashtree_Common_Debug::instance();
-       $this->_debug->log("INFO", "Connecting {$conn['ASH_conn_username']}@{$conn['ASH_conn_hostname']} to {$conn['ASH_conn_database']}");
+       $this->_debug->log("INFO", "Connecting {$conn['ash_conn_username']}@{$conn['ash_conn_hostname']} to {$conn['ash_conn_database']}");
 	   
-       if ($this->_connection = @mysql_connect($conn['ASH_conn_hostname'], $conn['ASH_conn_username'], $conn['ASH_conn_password']))
+       if ($this->_connection = @mysql_connect($conn['ash_conn_hostname'], $conn['ash_conn_username'], $conn['ash_conn_password']))
 	   {
 	       
-	       #if (@mysql_select_db($conn['ASH_conn_database'], $this->_connection)) $this->_debug->status('W/DB');
+	       #if (@mysql_select_db($conn['ash_conn_database'], $this->_connection)) $this->_debug->status('W/DB');
            #else $this->_debug->status('WO/DB');
            if (!defined('MYSQL_NULL')) define('MYSQL_NULL', mysql_real_escape_string("NULL", $this->_connection), 1);
            
-           if ($conn['ASH_conn_database'])
+           if ($conn['ash_conn_database'])
            {
                $this->_database = TRUE;
-               @mysql_select_db($conn['ASH_conn_database'], $this->_connection);  
+               @mysql_select_db($conn['ash_conn_database'], $this->_connection);  
            } 
            
            $this->_debug->status('OK');
