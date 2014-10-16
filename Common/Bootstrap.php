@@ -20,18 +20,20 @@ define('ASH_ROOTNAME',   str_replace('//', '/', '/' . preg_replace('/lib.*/', ''
 
 define('ASH_ROOTPATH',   preg_replace('/\/$/', '', DOCUMENT_ROOT) . ASH_ROOTNAME, TRUE);
 
-define('ASH_ROOTHTTP',  'http://' . $_SERVER['SERVER_NAME'] . ASH_ROOTNAME, TRUE);
+define('ASH_PORTNUM', ($_SERVER['SERVER_PORT'] != 80) ? ':' . $_SERVER['SERVER_PORT'] : '', TRUE);
 
-define('ASH_ROOTHTTPS', 'https://' . $_SERVER['SERVER_NAME'] . ASH_ROOTNAME, TRUE);
+define('ASH_ROOTHTTP',  'http://' . $_SERVER['SERVER_NAME'] . ASH_PORTNUM . ASH_ROOTNAME, TRUE);
+
+define('ASH_ROOTHTTPS', 'https://' . $_SERVER['SERVER_NAME'] . ASH_PORTNUM . ASH_ROOTNAME, TRUE);
 
 // Define all base paths relative to the initiating script
 define('ASH_BASENAME',  str_replace('//', '/', pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME) . '/'), TRUE);
 
 define('ASH_BASEPATH',  preg_replace('/\/$/', '', DOCUMENT_ROOT) . ASH_BASENAME, TRUE);
 
-define('ASH_BASEHTTP',  'http://' . $_SERVER['SERVER_NAME'] . ASH_BASENAME, TRUE);
+define('ASH_BASEHTTP',  'http://' . $_SERVER['SERVER_NAME'] . ASH_PORTNUM . ASH_BASENAME, TRUE);
 
-define('ASH_BASEHTTPS', 'https://' . $_SERVER['SERVER_NAME'] . ASH_BASENAME, TRUE);
+define('ASH_BASEHTTPS', 'https://' . $_SERVER['SERVER_NAME'] . ASH_PORTNUM . ASH_BASENAME, TRUE);
 
 // Define some library paths
 define('ASH_LIB', ASH_ROOTNAME . 'lib/', TRUE);
