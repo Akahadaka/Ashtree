@@ -256,5 +256,22 @@ class Ashtree_Html_Tag
 	    return $tag->build();
 	}
 	
-	
+	/**
+	 * Make a quick link
+	 * @access public
+	 * @param String $url
+	 * @param String $title
+	 * @param String $target
+	 * @param Boolean $absolute
+	 */
+	public static function img($url, $title=NULL, $width=NULL, $height=NULL)
+	{
+	    $tag = new Ashtree_Html_Tag('img');
+	    $tag->src = Ashtree_Common::http($url, FALSE);
+	    $tag->title = $tag->alt = isset($title) ? $title : Ashtree_Common::http($url, FALSE);
+	    if (isset($width)) $tag->width = $width;
+            if (isset($height)) $tag->width = $height;
+	    
+	    return $tag->build();
+	}
 }
