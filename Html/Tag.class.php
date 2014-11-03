@@ -270,7 +270,7 @@ class Ashtree_Html_Tag
 	    $tag->src = Ashtree_Common::http($url, FALSE);
 	    $tag->title = $tag->alt = isset($title) ? $title : Ashtree_Common::http($url, FALSE);
 	    if (isset($width)) $tag->width = $width;
-            if (isset($height)) $tag->width = $height;
+            if (isset($height)) $tag->height = $height;
 	    
 	    return $tag->build();
 	}
