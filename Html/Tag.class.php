@@ -264,10 +264,10 @@ class Ashtree_Html_Tag
 	 * @param String $target
 	 * @param Boolean $absolute
 	 */
-	public static function img($url, $title=NULL, $width=NULL, $height=NULL)
+	public static function img($url, $title=NULL, $width=NULL, $height=NULL, $absolute=TRUE)
 	{
 	    $tag = new Ashtree_Html_Tag('img');
-	    $tag->src = Ashtree_Common::http($url, FALSE);
+	    $tag->src = Ashtree_Common::http($url, $absolute);
 	    $tag->title = $tag->alt = isset($title) ? $title : Ashtree_Common::http($url, FALSE);
 	    if (isset($width)) $tag->width = $width;
             if (isset($height)) $tag->height = $height;
