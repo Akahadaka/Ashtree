@@ -265,7 +265,7 @@ class Ashtree_Html_Page
             $theme = ($this->theme) ? $this->theme : '';
             
             $fullpath = ASH_ROOTNAME . $theme . 'favicon.ico';
-            if (!is_file($fullpath)) {
+            if (!is_file(Ashtree_Common::get_real_path($fullpath, TRUE))) {
                 $fullpath = ASH_ROOTNAME . 'favicon.ico';
             }
             
