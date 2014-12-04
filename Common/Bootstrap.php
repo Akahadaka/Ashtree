@@ -38,7 +38,7 @@ define('ASH_BASEHTTPS', 'https://' . $_SERVER['SERVER_NAME'] . ASH_PORTNUM . ASH
 // Define some library paths
 define('ASH_LIB', ASH_ROOTNAME . 'lib/', TRUE);
 
-define('ASH_LIB_JSS', ASH_LIB . 'Javascript/', TRUE);
+define('ASH_LIB_JSS', ASH_LIB . 'Ashtree/Javascript/', TRUE);
 
 define('ASH_INC', ASH_ROOTPATH . 'inc/', TRUE);
 
